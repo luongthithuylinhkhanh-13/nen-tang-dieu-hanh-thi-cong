@@ -33,14 +33,14 @@ nen-tang-dieu-hanh-thi-cong/
 
 ## Công nghệ
 
-| Layer    | Công nghệ                              | Phase  |
-| -------- | -------------------------------------- | ------ |
-| Backend  | Java 21 · Spring Boot · Maven          | 1      |
-| Database | PostgreSQL 14+                         | 1      |
-| Migration| Liquibase                              | 1      |
-| Container| Docker / Docker Compose                | 2      |
-| CI/CD    | GitHub Actions                         | 2+     |
-| Frontend | TBD                                    | TBD    |
+| Layer    | Công nghệ                              |
+| -------- | -------------------------------------- |
+| Backend  | Java 21 · Spring Boot · Maven          |
+| Database | PostgreSQL 14+                         | 
+| Migration| Liquibase                              |
+| Container| Docker / Docker Compose                |
+| CI/CD    | GitHub Actions                         |
+| Frontend | TBD                                    |
 
 ---
 
@@ -332,3 +332,97 @@ main
 - `.env.example` chỉ chứa placeholder (giá trị rỗng hoặc mô tả).
 - Sử dụng environment variables cho tất cả credentials.
 - Kiểm tra `git status` trước mỗi commit.
+
+
+##  Docker Setup
+
+### 1. Công cụ cần cài
+
+* Docker Desktop
+* Docker Compose
+
+Kiểm tra:
+
+```bash
+docker --version
+docker compose version
+```
+
+### 2. Khởi động hệ thống
+
+Từ thư mục root của project:
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+Kiểm tra trạng thái các service:
+
+```bash
+docker compose ps
+```
+
+PostgreSQL phải ở trạng thái `healthy` và Backend phải ở trạng thái `running`.
+
+### 3. Kiểm tra log
+
+Kiểm tra Backend:
+
+```bash
+docker compose logs backend
+```
+
+Kiểm tra PostgreSQL:
+
+```bash
+docker compose logs postgres
+```
+
+Backend khởi động thành công khi log hiển thị:
+
+```text
+Started Application
+```
+
+### 4. Kiểm tra Database và Migration
+
+Kết nối vào PostgreSQL container:
+
+```bash
+docker exec -it construction-postgres psql -U postgres -d construction_management
+```
+
+Kiểm tra các bảng:
+
+```sql
+\dt
+```
+
+Kiểm tra migration:
+
+```sql
+SELECT * FROM schema_version;
+```
+
+Phải thấy record với:
+
+```text
+version_tag = phase1-infrastructure
+```
+
+### 5. Dừng hệ thống
+
+```bash
+docker compose down
+```
+
+> Không sử dụng `docker compose down -v` nếu muốn giữ dữ liệu PostgreSQL.
+
+### 6. Chạy lại hệ thống
+
+```bash
+docker compose up -d
+```
+
+Docker Compose sẽ khởi động PostgreSQL trước. Backend chỉ khởi động sau khi PostgreSQL đạt trạng thái `healthy`.
