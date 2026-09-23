@@ -1,3 +1,4 @@
+import '../styles/login.css';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BuildOutlined, CheckCircleOutlined } from '@ant-design/icons';
