@@ -1,42 +1,41 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import { UserOutlined, LockOutlined, LoginOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Checkbox, Alert } from 'antd';
+import { MailOutlined, LockOutlined, LoginOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { setAuthUser } from '../../utils/auth';
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
-  const handleFinish = (values) => {
-    const { username, password, remember } = values;
+  const handleFinish = async (values) => {
+    const { email, password, remember } = values;
 
+    setLoginError(null);
     setLoading(true);
 
-    setTimeout(() => {
-      if (username === 'admin' && password === '123456') {
-        const userObj = {
-          username: 'admin',
-          fullName: 'Quản trị viên',
-          role: 'Administrator',
-          loginTime: new Date().toISOString()
-        };
+    try {
+      // TODO(T03): Replace mock authentication with Authentication API when T03 is available.
+      // Expected API call:
+      //   const response = await loginAPI({ email, password });
+      //
+      // Expected response handling:
+      //   - Success: response.user object -> setAuthUser(response.user, remember) -> navigate('/wbs')
+      //   - Invalid credentials: setLoginError('Email hoặc mật khẩu không chính xác.')
+      //   - Account locked: setLoginError('Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.')
+      //   - Other errors: setLoginError('Đã xảy ra lỗi. Vui lòng thử lại sau.')
 
-        if (remember) {
-          setAuthUser(userObj);
-        } else {
-          sessionStorage.setItem('construction_demo_auth', JSON.stringify(userObj));
-          setAuthUser(userObj);
-        }
-
-        message.success('Đăng nhập thành công');
-        navigate('/wbs');
-      } else {
-        message.error('Tên đăng nhập hoặc mật khẩu không chính xác');
-      }
+      // Placeholder: do nothing until T03 Authentication API is ready.
+      // Remove this line and uncomment the API call above when T03 is complete.
+      setLoginError('Hệ thống đăng nhập chưa sẵn sàng. Vui lòng chờ tích hợp Authentication API (T03).');
+    } catch (error) {
+      console.error('Login error:', error);
+      setLoginError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   return (
@@ -49,6 +48,17 @@ const LoginForm = () => {
         <p className="login-subtitle">Đăng nhập để tiếp tục quản lý công trình</p>
       </div>
 
+      {loginError && (
+        <Alert
+          message={loginError}
+          type="error"
+          showIcon
+          closable
+          onClose={() => setLoginError(null)}
+          style={{ marginBottom: 20 }}
+        />
+      )}
+
       <Form
         form={form}
         name="login_form"
@@ -58,17 +68,18 @@ const LoginForm = () => {
         requiredMark={false}
       >
         <Form.Item
-          label="TÊN ĐĂNG NHẬP"
-          name="username"
+          label="EMAIL"
+          name="email"
           rules={[
-            { required: true, message: 'Vui lòng nhập tên đăng nhập' }
+            { required: true, message: 'Vui lòng nhập email' },
+            { type: 'email', message: 'Email không đúng định dạng' }
           ]}
         >
           <Input
-            prefix={<UserOutlined style={{ color: '#94A3B8' }} />}
-            placeholder="Nhập tên đăng nhập"
+            prefix={<MailOutlined style={{ color: '#94A3B8' }} />}
+            placeholder="Nhập email"
             size="large"
-            autoComplete="username"
+            autoComplete="email"
           />
         </Form.Item>
 
@@ -95,7 +106,7 @@ const LoginForm = () => {
             href="#forgot"
             onClick={(e) => {
               e.preventDefault();
-              message.info('Chức năng demo: Vui lòng sử dụng tài khoản admin / 123456');
+              // TODO(T03): Implement forgot password flow when T03 is available.
             }}
             style={{ color: '#2563EB', fontSize: 13, fontWeight: 500 }}
           >
@@ -108,6 +119,7 @@ const LoginForm = () => {
             type="primary"
             htmlType="submit"
             loading={loading}
+            disabled={loading}
             block
             icon={<LoginOutlined />}
             className="login-btn"
@@ -116,17 +128,6 @@ const LoginForm = () => {
           </Button>
         </Form.Item>
       </Form>
-
-      {/* Demo Credentials Helper Box */}
-      <div className="demo-account-box">
-        <div className="demo-account-header">
-          <InfoCircleOutlined /> TÀI KHOẢN DEMO
-        </div>
-        <div className="demo-account-info">
-          <div>Tên đăng nhập: <strong>admin</strong></div>
-          <div>Mật khẩu: <strong>123456</strong></div>
-        </div>
-      </div>
     </div>
   );
 };
