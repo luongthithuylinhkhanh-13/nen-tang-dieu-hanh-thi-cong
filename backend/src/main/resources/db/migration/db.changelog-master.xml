@@ -12,4 +12,8 @@
     <include file="db/migration/v1/V1_0__init_infrastructure_check.xml"
              relativeToChangelogFile="false"/>
 
+    <!-- T-03.1: Bảng Users -->
+    <include file="db/migration/v2/V2_0__create_users_table.xml"
+             relativeToChangelogFile="false"/>
+
 </databaseChangeLog>
