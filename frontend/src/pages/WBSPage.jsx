@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Button, Modal, message } from 'antd';
 import { PlusOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
-import ProjectInfoBar from '../components/wbs/ProjectInfoBar';
+import ProjectHeroCard from '../components/wbs/ProjectHeroCard';
 import WbsStats from '../components/wbs/WbsStats';
 import WbsToolbar from '../components/wbs/WbsToolbar';
 import WbsTreeTable from '../components/wbs/WbsTreeTable';
@@ -12,10 +12,10 @@ import EmptyWbs from '../components/wbs/EmptyWbs';
 
 import { PROJECTS } from '../data/projects';
 import { INITIAL_WBS_DATA } from '../data/wbsData';
-import { 
-  calculateStats, 
-  getAllNodeKeys, 
-  filterTreeData, 
+import {
+  calculateStats,
+  getAllNodeKeys,
+  filterTreeData,
   findNodeById,
   addNodeToTree,
   updateNodeInTree,
@@ -255,15 +255,15 @@ const WBSPage = () => {
         </div>
 
         <div className="page-actions">
-          <Button 
-            icon={<DownloadOutlined />} 
+          <Button
+            icon={<DownloadOutlined />}
             onClick={() => message.info('Chức năng xuất dữ liệu (Demo UI)')}
           >
             Xuất dữ liệu
           </Button>
 
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => handleOpenAddModal(null)}
           >
@@ -273,7 +273,7 @@ const WBSPage = () => {
       </div>
 
       {/* Project Info Bar */}
-      <ProjectInfoBar project={currentProject} />
+      <ProjectHeroCard project={currentProject} />
 
       {/* Statistics Cards */}
       <WbsStats stats={stats} />
@@ -288,7 +288,7 @@ const WBSPage = () => {
         </div>
 
         {/* Toolbar */}
-        <WbsToolbar 
+        <WbsToolbar
           selectedProjectId={selectedProjectId}
           onSelectProject={handleSelectProject}
           searchText={searchText}
@@ -304,7 +304,7 @@ const WBSPage = () => {
         {rawTreeNodes.length === 0 ? (
           <EmptyWbs onCreateFirstTask={() => handleOpenAddModal(null)} />
         ) : (
-          <WbsTreeTable 
+          <WbsTreeTable
             nodes={filteredNodes}
             expandedKeys={effectiveExpandedKeys}
             onToggleExpand={handleToggleExpand}
@@ -322,7 +322,7 @@ const WBSPage = () => {
       </div>
 
       {/* Detail Drawer */}
-      <WorkDetailDrawer 
+      <WorkDetailDrawer
         visible={drawerVisible}
         onClose={() => setDrawerVisible(false)}
         node={activeSelectedNode}
@@ -341,7 +341,7 @@ const WBSPage = () => {
       />
 
       {/* Add / Edit Form Modal */}
-      <WorkFormModal 
+      <WorkFormModal
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
         onSubmit={handleFormSubmit}

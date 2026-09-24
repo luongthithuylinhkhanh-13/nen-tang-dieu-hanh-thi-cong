@@ -345,6 +345,11 @@
   transition: var(--transition-normal);
 }
 
+.stat-card.total { background-color: #EFF6FF; }
+.stat-card.inprogress { background-color: #FFFBEB; }
+.stat-card.completed { background-color: #F0FDF4; }
+.stat-card.notstarted { background-color: #FEE2E2; }
+
 .stat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Tag, Progress, Button, Space, Descriptions, List, Popconfirm } from 'antd';
+import { Drawer, Tag, Progress, Button, Space, Descriptions, List, Popconfirm, Image } from 'antd';
 import { 
   PlusOutlined, 
   EditOutlined, 
@@ -141,6 +141,29 @@ const WorkDetailDrawer = ({
             <FileTextOutlined style={{ marginRight: 6, color: '#64748B' }} />
             {node.description || 'Chưa có mô tả'}
           </div>
+        </div>
+        {/* Section: Images */}
+        <div>
+          <div className="drawer-section-title">HÌNH ẢNH HIỆN TRƯỜNG</div>
+          {node.images && node.images.length > 0 ? (
+            <Image.PreviewGroup>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+                {node.images.map((img, idx) => (
+                  <Image
+                    key={idx}
+                    src={typeof img === 'string' ? `/images/construction/${img}` : img.url}
+                    width={100}
+                    height={80}
+                    style={{ objectFit: 'cover', borderRadius: 4 }}
+                  />
+                ))}
+              </div>
+            </Image.PreviewGroup>
+          ) : (
+            <div style={{ padding: 12, textAlign: 'center', color: '#94A3B8', border: '1px dashed #CBD5E1', borderRadius: 6, fontSize: 13, marginTop: 8 }}>
+              Chưa có hình ảnh hiện trường
+            </div>
+          )}
         </div>
 
         {/* Section: Sub-tasks */}
