@@ -11,5 +11,7 @@
     -->
     <include file="db/migration/v1/V1_0__init_infrastructure_check.xml"
              relativeToChangelogFile="false"/>
+    <include file="db/migration/v1/V1_1__create_users_table.xml"
+             relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
