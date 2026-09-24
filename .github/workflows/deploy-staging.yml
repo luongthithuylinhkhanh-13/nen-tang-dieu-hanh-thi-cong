@@ -10,10 +10,27 @@ env:
   DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/construction-backend
 
 jobs:
-  # Bước 1: CI (Lint, Test, Build mã nguồn Java Spring Boot)
+  # Bước 1: CI (Lint, Test, Build mã nguồn Java Spring Boot có Database kèm theo)
   ci-pipeline:
     name: Lint, Test and Build
     runs-on: ubuntu-latest
+
+    # Khởi động PostgreSQL container chạy song song để phục vụ bước Test
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: construction_management
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: testpassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     defaults:
       run:
         working-directory: ./backend
@@ -36,6 +53,17 @@ jobs:
         run: ./mvnw checkstyle:check || echo "Passing lint phase"
 
       - name: Run Tests
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: construction_management
+          DB_USERNAME: postgres
+          DB_PASSWORD: testpassword
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
+          DATABASE_NAME: construction_management
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: testpassword
         run: ./mvnw test
 
       - name: Build Project Artifact (.jar)
