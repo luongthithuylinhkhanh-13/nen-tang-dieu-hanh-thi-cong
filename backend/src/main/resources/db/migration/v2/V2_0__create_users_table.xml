@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!--
+        V2.0 - Create Users Table
+        Task: T-03.1 — Thiết kế bảng Users
+        
+        Lưu ý:
+        - role_id chưa có FK constraint vì bảng roles chưa tồn tại.
+          FK sẽ được thêm ở migration riêng sau khi bảng roles đã được tạo.
+        - password sẽ lưu dạng hash Argon2id (T-03.3), hiện tại chỉ định nghĩa column.
+    -->
+    <changeSet id="V2.0-create-users-table" author="T-03.1">
+        <comment>
+            Tạo bảng users cho hệ thống quản lý người dùng.
+            ID dùng UUID (gen_random_uuid).
+            role_id là UUID nullable, chưa có FK — sẽ thêm sau khi bảng roles được tạo.
+            Rollback: DROP TABLE users.
+        </comment>
+
+        <createTable tableName="users"
+                     remarks="Bảng người dùng hệ thống. Tạo bởi T-03.1.">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_users_email"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="role_id" type="UUID"
+                    remarks="FK tới roles.id — constraint sẽ được thêm ở migration riêng sau khi bảng roles tồn tại.">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="users"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
