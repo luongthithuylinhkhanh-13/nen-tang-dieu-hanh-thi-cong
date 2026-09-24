@@ -117,6 +117,43 @@ const WBSPage = () => {
     setStatusFilter('ALL');
   };
 
+  // Export the visible project tree as a spreadsheet-friendly CSV file.
+  const handleExport = () => {
+    const rows = [];
+    const flatten = (items, level = 0) => {
+      items.forEach(item => {
+        rows.push({
+          level,
+          wbsCode: item.wbsCode,
+          name: item.name,
+          type: item.type,
+          assignee: item.assignee?.name || '',
+          status: item.status,
+          progress: `${item.progress || 0}%`,
+          startDate: item.startDate || '',
+          endDate: item.endDate || ''
+        });
+        if (item.children?.length) flatten(item.children, level + 1);
+      });
+    };
+
+    flatten(rawTreeNodes);
+    const headers = ['Cấp', 'Mã WBS', 'Tên công việc', 'Loại', 'Người phụ trách', 'Trạng thái', 'Tiến độ', 'Ngày bắt đầu', 'Ngày kết thúc'];
+    const escapeCsv = value => `"${String(value).replaceAll('"', '""')}"`;
+    const csv = [
+      headers,
+      ...rows.map(row => [row.level, row.wbsCode, row.name, row.type, row.assignee, row.status, row.progress, row.startDate, row.endDate])
+    ].map(row => row.map(escapeCsv).join(',')).join('\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${currentProject.code}-wbs.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    message.success('Đã xuất dữ liệu WBS');
+  };
+
   // Select Node & Open Drawer
   const handleSelectNode = (node) => {
     setSelectedNodeId(node.id);
@@ -257,7 +294,7 @@ const WBSPage = () => {
         <div className="page-actions">
           <Button 
             icon={<DownloadOutlined />} 
-            onClick={() => message.info('Chức năng xuất dữ liệu (Demo UI)')}
+            onClick={handleExport}
           >
             Xuất dữ liệu
           </Button>

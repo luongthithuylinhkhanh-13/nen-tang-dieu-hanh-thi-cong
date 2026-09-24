@@ -91,7 +91,7 @@ const WbsTreeRow = ({
     }
   ];
 
-  const handleRowClick = (e) => {
+  const handleRowClick = () => {
     onSelectNode(node);
   };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Tag, Progress, Button, Space, Descriptions, List, Popconfirm } from 'antd';
+import { Drawer, Tag, Progress, Button, Space, Descriptions, List } from 'antd';
 import { 
   PlusOutlined, 
   EditOutlined, 
@@ -7,7 +7,6 @@ import {
   UserOutlined, 
   CalendarOutlined, 
   FileTextOutlined,
-  CheckCircleOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 

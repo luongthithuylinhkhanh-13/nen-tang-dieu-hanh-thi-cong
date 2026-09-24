@@ -1,6 +1,6 @@
 import React from 'react';
 import { Empty, Button } from 'antd';
-import { PlusOutlined, NodeIndexOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 
 const EmptyWbs = ({ onCreateFirstTask }) => {
   return (
