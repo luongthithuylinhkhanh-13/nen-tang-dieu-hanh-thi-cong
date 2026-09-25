@@ -1,0 +1,13 @@
+/* src/styles/variables.css */
+:root {
+  --primary-blue: #2563EB;
+  --primary-blue-light: #3B82F6;
+  --primary-blue-dark: #1E40AF;
+  --bg-color: #F8FAFC;
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --dark-navy: #1F2937;
+}
