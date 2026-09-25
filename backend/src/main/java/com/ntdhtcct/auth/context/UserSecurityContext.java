@@ -1,21 +1,27 @@
 package com.ntdhtcct.auth.context;
 
+import java.util.UUID;
+
 /**
- * Lưu trữ thông tin định danh và vai trò của người dùng hiện tại trong luồng xử lý request.
+ * Lưu trữ thông tin định danh và vai trò của người dùng hiện tại
+ * trong luồng xử lý request.
  */
 public final class UserSecurityContext {
 
-    private static final ThreadLocal<Long> CURRENT_USER_ID = new ThreadLocal<>();
-    private static final ThreadLocal<String> CURRENT_USER_PROJECT_ROLE = new ThreadLocal<>();
+    private static final ThreadLocal<UUID> CURRENT_USER_ID =
+            new ThreadLocal<>();
+
+    private static final ThreadLocal<String> CURRENT_USER_PROJECT_ROLE =
+            new ThreadLocal<>();
 
     private UserSecurityContext() {
     }
 
-    public static void setUserId(Long userId) {
+    public static void setUserId(UUID userId) {
         CURRENT_USER_ID.set(userId);
     }
 
-    public static Long getUserId() {
+    public static UUID getUserId() {
         return CURRENT_USER_ID.get();
     }
 

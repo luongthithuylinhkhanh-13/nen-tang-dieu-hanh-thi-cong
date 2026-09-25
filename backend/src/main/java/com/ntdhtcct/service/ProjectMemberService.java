@@ -5,19 +5,36 @@ import com.ntdhtcct.dto.ProjectMemberResponse;
 import com.ntdhtcct.dto.UpdateMemberRoleRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
- * T-04.4: Service quản lý thành viên và gán vai trò (RBAC) cho người dùng trong dự án.
+ * T-04.4: Service quản lý thành viên và gán vai trò (RBAC)
+ * cho người dùng trong dự án.
  */
 public interface ProjectMemberService {
 
-    ProjectMemberResponse addMemberToProject(Long projectId, AddMemberRequest request);
+    ProjectMemberResponse addMemberToProject(
+            Long projectId,
+            AddMemberRequest request
+    );
 
-    ProjectMemberResponse updateMemberRole(Long projectId, Long userId, UpdateMemberRoleRequest request);
+    ProjectMemberResponse updateMemberRole(
+            Long projectId,
+            UUID userId,
+            UpdateMemberRoleRequest request
+    );
 
-    void removeMemberFromProject(Long projectId, Long userId);
+    void removeMemberFromProject(
+            Long projectId,
+            UUID userId
+    );
 
-    List<ProjectMemberResponse> getProjectMembers(Long projectId);
+    List<ProjectMemberResponse> getProjectMembers(
+            Long projectId
+    );
 
-    ProjectMemberResponse getProjectMember(Long projectId, Long userId);
+    ProjectMemberResponse getProjectMember(
+            Long projectId,
+            UUID userId
+    );
 }

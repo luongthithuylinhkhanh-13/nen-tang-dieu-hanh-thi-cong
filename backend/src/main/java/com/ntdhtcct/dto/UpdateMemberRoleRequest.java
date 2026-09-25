@@ -7,21 +7,21 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class UpdateMemberRoleRequest {
 
-    @NotBlank(message = "Mã vai trò mới (newRoleCode) không được để trống")
-    private String newRoleCode;
+    @NotBlank(message = "Tên vai trò mới (newRoleName) không được để trống")
+    private String newRoleName;
 
     public UpdateMemberRoleRequest() {
     }
 
-    public UpdateMemberRoleRequest(String newRoleCode) {
-        this.newRoleCode = newRoleCode;
+    public UpdateMemberRoleRequest(String newRoleName) {
+        this.newRoleName = newRoleName;
     }
 
-    public String getNewRoleCode() {
-        return newRoleCode;
+    public String getNewRoleName() {
+        return newRoleName;
     }
 
-    public void setNewRoleCode(String newRoleCode) {
-        this.newRoleCode = newRoleCode;
+    public void setNewRoleName(String newRoleName) {
+        this.newRoleName = newRoleName;
     }
 }

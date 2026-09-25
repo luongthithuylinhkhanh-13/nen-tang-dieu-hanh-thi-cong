@@ -3,13 +3,15 @@ package com.ntdhtcct.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.UUID;
+
 /**
  * T-04.4: DTO yêu cầu gán vai trò và thêm thành viên vào dự án.
  */
 public class AddMemberRequest {
 
     @NotNull(message = "ID người dùng (userId) không được để trống")
-    private Long userId;
+    private UUID userId;
 
     @NotBlank(message = "Mã vai trò (roleCode) không được để trống")
     private String roleCode;
@@ -17,16 +19,16 @@ public class AddMemberRequest {
     public AddMemberRequest() {
     }
 
-    public AddMemberRequest(Long userId, String roleCode) {
+    public AddMemberRequest(UUID userId, String roleCode) {
         this.userId = userId;
         this.roleCode = roleCode;
     }
 
-    public Long getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 

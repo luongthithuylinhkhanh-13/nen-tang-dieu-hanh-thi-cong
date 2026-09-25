@@ -8,24 +8,46 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-    Optional<ProjectMember> findByProjectIdAndUserId(Long projectId, Long userId);
+    Optional<ProjectMember> findByProjectIdAndUserId(
+            Long projectId,
+            UUID userId
+    );
 
-    Optional<ProjectMember> findByProjectIdAndUserIdAndStatus(Long projectId, Long userId, String status);
+    Optional<ProjectMember> findByProjectIdAndUserIdAndStatus(
+            Long projectId,
+            UUID userId,
+            String status
+    );
 
     List<ProjectMember> findByProjectId(Long projectId);
 
-    List<ProjectMember> findByUserId(Long userId);
+    List<ProjectMember> findByUserId(UUID userId);
 
-    boolean existsByProjectIdAndUserIdAndStatus(Long projectId, Long userId, String status);
+    boolean existsByProjectIdAndUserIdAndStatus(
+            Long projectId,
+            UUID userId,
+            String status
+    );
 
-    void deleteByProjectIdAndUserId(Long projectId, Long userId);
+    void deleteByProjectIdAndUserId(
+            Long projectId,
+            UUID userId
+    );
 
-    @Query("SELECT pm.role.code FROM ProjectMember pm " +
-           "WHERE pm.project.id = :projectId AND pm.user.id = :userId AND pm.status = 'ACTIVE'")
-    Optional<String> findActiveRoleCodeByProjectAndUser(@Param("projectId") Long projectId,
-                                                        @Param("userId") Long userId);
+    @Query("""
+        SELECT pm.role.name
+        FROM ProjectMember pm
+        WHERE pm.project.id = :projectId
+          AND pm.user.id = :userId
+          AND pm.status = 'ACTIVE'
+    """)
+    Optional<String> findActiveRoleNameByProjectAndUser(
+            @Param("projectId") Long projectId,
+            @Param("userId") UUID userId
+    );
 }

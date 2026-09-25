@@ -3,6 +3,7 @@ package com.ntdhtcct.dto;
 import com.ntdhtcct.entity.ProjectMember;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * T-04.4: DTO thông tin thành viên dự án và vai trò được gán.
@@ -13,12 +14,15 @@ public class ProjectMemberResponse {
     private Long projectId;
     private String projectCode;
     private String projectName;
-    private Long userId;
+
+    private UUID userId;
     private String username;
     private String fullName;
     private String email;
+
     private String roleCode;
     private String roleName;
+
     private String status;
     private OffsetDateTime joinedAt;
 
@@ -27,28 +31,41 @@ public class ProjectMemberResponse {
 
     public static ProjectMemberResponse fromEntity(ProjectMember member) {
         ProjectMemberResponse res = new ProjectMemberResponse();
+
         res.setId(member.getId());
+
         if (member.getProject() != null) {
             res.setProjectId(member.getProject().getId());
             res.setProjectCode(member.getProject().getCode());
             res.setProjectName(member.getProject().getName());
         }
+
         if (member.getUser() != null) {
             res.setUserId(member.getUser().getId());
-            res.setUsername(member.getUser().getUsername());
+
+            // User mới không còn username.
+            // Dùng email làm tên đăng nhập.
+            res.setUsername(member.getUser().getEmail());
+
             res.setFullName(member.getUser().getFullName());
             res.setEmail(member.getUser().getEmail());
         }
+
         if (member.getRole() != null) {
-            res.setRoleCode(member.getRole().getCode());
+            // Role mới không còn code.
+            // Dùng name làm roleCode và roleName.
+            res.setRoleCode(member.getRole().getName());
             res.setRoleName(member.getRole().getName());
         }
+
         res.setStatus(member.getStatus());
         res.setJoinedAt(member.getJoinedAt());
+
         return res;
     }
 
     // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -81,11 +98,11 @@ public class ProjectMemberResponse {
         this.projectName = projectName;
     }
 
-    public Long getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 

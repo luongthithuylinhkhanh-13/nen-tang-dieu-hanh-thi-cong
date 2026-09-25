@@ -9,9 +9,8 @@
         Master changelog: danh sách các migration file theo thứ tự.
         Thêm file mới vào cuối danh sách, không thay đổi thứ tự file cũ.
     -->
+
     <include file="db/migration/v1/V1_0__init_infrastructure_check.xml"
-             relativeToChangelogFile="false"/>
-    <include file="db/migration/v1/V1_1__auth_and_project_rbac.xml"
              relativeToChangelogFile="false"/>
 
     <!-- T-03.1: Bảng Users -->
@@ -28,6 +27,9 @@
              relativeToChangelogFile="false"/>
 
     <include file="db/migration/v6/V6_0__create_auth_tokens_table.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="db/migration/v7/V7_0__create_project_rbac_tables.xml"
              relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
