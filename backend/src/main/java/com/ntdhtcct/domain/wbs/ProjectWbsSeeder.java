@@ -34,44 +34,56 @@ public class ProjectWbsSeeder implements CommandLineRunner {
     // =========================================================
     private void seedProjects() {
 
-        if (!projectRepository.existsByCode("DA-001")) {
-            Project project = new Project(
-                    "DA-001",
-                    "Xây dựng Chung cư Green Tower"
-            );
+        // DA-001
+        Project da001 = projectRepository.findByCode("DA-001")
+                .orElseGet(() -> new Project(
+                        "DA-001",
+                        "Xây dựng Chung cư Green Tower"
+                ));
 
-            project.setStatus("in_progress");
-            project.setProgress(68);
-            project.setDescription(
-                    "Dự án xây dựng chung cư Green Tower"
-            );
+        da001.setName("Xây dựng Chung cư Green Tower");
+        da001.setStatus("in_progress");
+        da001.setProgress(68);
+        da001.setStartDate(LocalDate.parse("2026-09-01"));
+        da001.setEndDate(LocalDate.parse("2027-06-30"));
+        da001.setDescription(
+                "Dự án xây dựng chung cư Green Tower"
+        );
 
-            projectRepository.save(project);
-        }
+        projectRepository.save(da001);
 
-        if (!projectRepository.existsByCode("DA-002")) {
-            Project project = new Project(
-                    "DA-002",
-                    "Dự án DA-002"
-            );
+        // DA-002
+        Project da002 = projectRepository.findByCode("DA-002")
+                .orElseGet(() -> new Project(
+                        "DA-002",
+                        "Khu đô thị Green City"
+                ));
 
-            project.setStatus("in_progress");
-            project.setProgress(0);
+        da002.setName("Khu đô thị Green City");
+        da002.setStatus("in_progress");
+        da002.setProgress(35);
+        da002.setStartDate(LocalDate.parse("2026-10-15"));
+        da002.setEndDate(LocalDate.parse("2028-12-31"));
+        da002.setDescription(
+                "Dự án khu đô thị sinh thái cao cấp."
+        );
 
-            projectRepository.save(project);
-        }
+        projectRepository.save(da002);
 
-        if (!projectRepository.existsByCode("DA-003")) {
-            Project project = new Project(
-                    "DA-003",
-                    "Dự án DA-003"
-            );
+        // DA-003
+        Project da003 = projectRepository.findByCode("DA-003")
+                .orElseGet(() -> new Project(
+                        "DA-003",
+                        "Dự án DA-003"
+                ));
 
-            project.setStatus("not_started");
-            project.setProgress(0);
+        da003.setName("Dự án DA-003");
+        da003.setStatus("not_started");
+        da003.setProgress(0);
+        da003.setStartDate(null);
+        da003.setEndDate(null);
 
-            projectRepository.save(project);
-        }
+        projectRepository.save(da003);
     }
 
     // =========================================================
@@ -485,11 +497,15 @@ public class ProjectWbsSeeder implements CommandLineRunner {
         item.setProgress(progress);
 
         if (startDate != null) {
-            item.setStartDate(LocalDate.parse(startDate));
+            item.setStartDate(
+                    LocalDate.parse(startDate)
+            );
         }
 
         if (endDate != null) {
-            item.setEndDate(LocalDate.parse(endDate));
+            item.setEndDate(
+                    LocalDate.parse(endDate)
+            );
         }
 
         item.setDescription(description);
