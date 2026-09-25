@@ -27,5 +27,8 @@
 
     <include file="db/migration/v6/V6_0__create_auth_tokens_table.xml"
              relativeToChangelogFile="false"/>
+    <!-- T-06: Project & WBS -->
+    <include file="db/migration/v7/V7_0__create_projects_wbs_tables.xml"
+             relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
