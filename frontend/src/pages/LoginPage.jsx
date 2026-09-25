@@ -1,65 +1,45 @@
-import React, { useState } from 'react';
-import { Button, Card, Form, Input, Typography, message } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { loginUser } from '../utils/auth';
+import '../styles/login.css';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { BuildOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { Progress } from 'antd';
+import LoginForm from '../components/auth/LoginForm';
+import { isAuthenticated } from '../utils/auth';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (values) => {
-    setLoading(true);
-    const result = loginUser(values.username, values.password);
-    setLoading(false);
-
-    if (!result.success) {
-      message.error(result.message);
-      return;
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate('/wbs');
     }
-
-    message.success('Đăng nhập thành công');
-    navigate(location.state?.from?.pathname || '/', { replace: true });
-  };
+  }, [navigate]);
 
   return (
-    <main className="login-page">
-      <Card className="login-card" bordered={false}>
-        <div className="login-brand">
-          <div className="login-brand-mark">CF</div>
-          <div>
-            <Typography.Title level={3}>CONSTRUCTFLOW</Typography.Title>
-            <Typography.Text>Điều hành thi công công trình</Typography.Text>
-          </div>
+    <div className="login-container">
+      {/* Header Bar */}
+      <div className="login-header-bar">
+        <div className="logo">
+          <BuildOutlined className="hero-logo-icon" />
+          <span>CONSTRUCTFLOW</span>
         </div>
+        {/* Add navigation links if needed */}
+      </div>
 
-        <div className="login-heading">
-          <Typography.Title level={2}>Đăng nhập</Typography.Title>
-          <Typography.Text>Truy cập không gian làm việc của bạn</Typography.Text>
+      {/* Centered Login Card */}
+      <div className="login-panel">
+        <div className="login-card-header">
+          <h1 className="title">Chào mừng trở lại</h1>
+          <p className="subtitle">Quản lý thi công công trình một cách trực quan</p>
         </div>
+        <LoginForm />
+      </div>
 
-        <Form layout="vertical" onFinish={handleSubmit} requiredMark={false}>
-          <Form.Item
-            label="Tài khoản"
-            name="username"
-            rules={[{ required: true, message: 'Vui lòng nhập tài khoản' }]}
-          >
-            <Input prefix={<UserOutlined />} placeholder="Nhập tài khoản" size="large" />
-          </Form.Item>
-          <Form.Item
-            label="Mật khẩu"
-            name="password"
-            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}
-          >
-            <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu" size="large" />
-          </Form.Item>
-          <Button type="primary" htmlType="submit" size="large" block loading={loading}>
-            Đăng nhập
-          </Button>
-        </Form>
-      </Card>
-    </main>
+      {/* Footer */}
+      <div className="login-footer">
+        © 2026 CONSTRUCTFLOW. Nền tảng điều hành thi công công trình.
+      </div>
+    </div>
   );
 };
 
